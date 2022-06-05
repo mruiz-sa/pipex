@@ -14,5 +14,10 @@
 # define PIPEX_H
 
 # include <unistd.h>
+# include <stdio.h>
+# include <fcntl.h>
+
+#define FD_READ_END		0
+#define FD_WRITE_END	1
 
 #endif

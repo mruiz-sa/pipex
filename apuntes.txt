@@ -9,6 +9,9 @@ int main(void)
 }
 Printa 3 veces hello.
 
+PIPE
+En pipex la funcion es crear una "tuberia" para comunicar los 2 comandos.
+
 WAIT
  La  función  wait  suspende  la  ejecución del proceso actual haste que un proceso hijo ha
 terminado.
@@ -16,3 +19,13 @@ terminado.
 WAITPID
 La  función  waitpid  suspende  la  ejecución  del  proceso  en  curso  hasta  que un hijo
 especificado por el argumento pid ha terminado
+
+DUP2
+Genera un duplicado de un descriptor existente. En pipex se utiliza para que un comando en vez de ejecutar la salida por el stdout, lo haga a traves del pipe.
+
+
+
+
+
+
+https://www.youtube.com/watch?v=8LdQ09Ep9RY
