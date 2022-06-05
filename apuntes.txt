@@ -1,0 +1,18 @@
+FORK
+Se utiliza para dividir procesos en 2. El hijo con ID 0 y el padre con otro ID.
+int main(void)
+{
+    int id = fork();
+    if (id == 0)
+        fork();
+    printf("hello\n");
+}
+Printa 3 veces hello.
+
+WAIT
+ La  función  wait  suspende  la  ejecución del proceso actual haste que un proceso hijo ha
+terminado.
+
+WAITPID
+La  función  waitpid  suspende  la  ejecución  del  proceso  en  curso  hasta  que un hijo
+especificado por el argumento pid ha terminado
