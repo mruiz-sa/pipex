@@ -26,35 +26,31 @@ char	path_line(char **envp)
 	return (NULL);
 }
 
-void	get_path(char *command, char *envp[], char **f_path)
+void	ft_get_path(char *command, char *envp[], char **f_path)
 {
-	char	**paths;
-	char	*path;
+	char	**path_list;
+	char	*path_slash;
 	char	*path_arg;
 	int		i;
 	int		fd;
 
 	i = 0;
-	paths = ft_split(ft_strchr(path_line(envp), '/'), ':');
-	while (paths[i])
+	path_list = ft_split(ft_strchr(path_line(envp), '/'), ':');
+	while (path_list[i])
 	{
-		path = ft_strjoin(paths[i], '/');
-		path_arg = ft_strjoin(path, command);
-		free(path);
+		path_slash = ft_strjoin(path_list[i], '/');
+		path_arg = ft_strjoin(path_slash, command);
+		free(path_slash);
 		fd = open(path_arg, O_RDONLY);
 		if (fd >= 0)
 		{
-			
+			*f_path = path_arg;
+			free_trash(path_list);
+			close(fd);
+			return ;
 		}
 		free(path_arg);
 		i++;
 	}
-}
-
-char	**ft_av_split(char *av)
-{
-	char	**av_split;
-
-	av_split = ft_split(av, ' ');
-	return (av_split);
+	free_trash(path_list);
 }

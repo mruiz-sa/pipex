@@ -21,3 +21,24 @@ void	check_fd(int fd, char *file_name)
 		exit(0);
 	}
 }
+
+void	free_trash(char **trash)
+{
+	int	i;
+
+	i = 0;
+	while (trash[i])
+	{
+		free(trash[i]);
+		i++;
+	}
+	free(trash);
+}
+
+char	**ft_av_split(char *av)
+{
+	char	**av_split;
+
+	av_split = ft_split(av, ' ');
+	return (av_split);
+}
