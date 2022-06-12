@@ -6,34 +6,46 @@
 #    By: mruiz-sa <mruiz-sa@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/31 19:11:27 by mruiz-sa          #+#    #+#              #
-#    Updated: 2022/05/09 12:43:57 by mruiz-sa         ###   ########.fr        #
+#    Updated: 2022/06/12 12:25:14 by mruiz-sa         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = pipex.a
+NAME = pipex
 
-FUNCTIONS = ft_putendl_fd.c ft_putstr_fd.c ft_split.c ft_strchr.c \
-			ft_strjoin.c ft_strlen.c ft_strncmp.c path.c pipex.c \
-			utils.c
+SRC = ./srcs/ft_putendl_fd.c \
+			./srcs/ft_putstr_fd.c \
+			./srcs/ft_split.c \
+			./srcs/ft_strchr.c \
+			./srcs/ft_strjoin.c \
+			./srcs/ft_strlen.c \
+			./srcs/ft_strncmp.c \
+			./srcs/ft_substr.c \
+			./srcs/path.c \
+			./srcs/utils.c \
+			./pipex.c
 
-OBJECTS = $(FUNCTIONS:.c=.o)
+OBJECTS = $(SRC:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra
+FLAGS = gcc -Wall -Werror -Wextra
+
+$(NAME): $(OBJECTS)
+		@clear
+		@echo "\n\033[92m"---------\\nCOMPILED\\n---------\\n"\033[0m\n"
+		@ar -rc $(NAME) $(OBJECTS)
+		@ranlib $(NAME)
+		@$(FLAGS) $(SRC) -o pipex
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-		ar rc $(NAME) $(OBJECTS)
-
-$(OBJECTS): $(FUNCTIONS)
-		gcc $(CFLAGS) -c $(FUNCTIONS)
-
-clean:
+clean: 
+		@clear
+		@echo "\n\033[31m"-------------\\nDELETED FILES\\n-------------\\n"\033[0m\n"
 		@rm -f $(OBJECTS)
 
 fclean: clean
-		@rm -f $(OBJECTS) $(NAME)
+		@rm -rf $(NAME)
+		@rm -rf pipex
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean re

@@ -6,11 +6,11 @@
 /*   By: mruiz-sa <mruiz-sa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/05 12:45:45 by mruiz-sa          #+#    #+#             */
-/*   Updated: 2022/06/06 11:35:55 by mruiz-sa         ###   ########.fr       */
+/*   Updated: 2022/06/12 13:03:30 by mruiz-sa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "./include/pipex.h"
 
 void	child_start(int *fd, char **av, char **envp)
 {
@@ -44,9 +44,11 @@ void	child_end(int *fd, char **av, char **envp)
 	char	*path;
 
 	close(fd[FD_WRITE_END]);
-	fd_out = open(av[4], O_WRONLY | O_CREAT | O_TRUNC | O_APPEND | S_IRWXU);
+	fd_out = open(av[4], O_CREAT | O_WRONLY | O_TRUNC,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	dup2(fd[FD_READ_END], STDIN_FILENO);
 	close(fd[FD_READ_END]);
+	dup2(fd_out, STDOUT_FILENO);
 	av_split = ft_av_split(av[3]);
 	ft_get_path(av_split[0], envp, &path);
 	if (execve(path, av_split, envp) == -1)
@@ -64,28 +66,26 @@ int	main(int ac, char **av, char **envp)
 	pid_t	pid;
 	int		fd[2];
 
-	if (ac == 5)
+	check_ac(ac);
+	pipe(fd);
+	pid = fork();
+	if (pid == -1)
+		perror("ERROR");
+	if (pid == 0)
+		child_start(fd, av, envp);
+	else
 	{
-		pipe(fd);
 		pid = fork();
 		if (pid == -1)
 			perror("ERROR");
 		if (pid == 0)
-			child_start(fd, av, envp);
+			child_end(fd, av, envp);
 		else
 		{
-			pid = fork();
-			if (pid == -1)
-				perror("ERROR");
-			if (pid == 0)
-				child_end(fd, av, envp);
-			else
-			{
-				close(fd[FD_READ_END]);
-				close(fd[FD_WRITE_END]);
-			}
+			close(fd[FD_READ_END]);
+			close(fd[FD_WRITE_END]);
 		}
-		waitpid(pid, NULL, 0);
-		return (0);
 	}
+	waitpid(pid, NULL, 0);
+	return (0);
 }
